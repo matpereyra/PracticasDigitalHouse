@@ -1,4 +1,6 @@
-package com.meli.demoromannumbersapp.models;
+package com.meli.demoromannumbersapp.utils;
+
+import com.meli.demoromannumbersapp.models.RomanNumber;
 
 public class NumberConverter {
 
@@ -63,6 +65,6 @@ public class NumberConverter {
             }
         }
 
-        return res;
+        return new RomanNumber(res);
     }
 }

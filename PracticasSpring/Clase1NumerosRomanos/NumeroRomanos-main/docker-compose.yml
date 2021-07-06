@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  numeros_romanos:
+    build: .
+    container_name: numeros_romanos
+    ports:
+      - "8080:8080"
+volumes:
+  db-data:
+    driver: local
