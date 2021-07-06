@@ -1,6 +1,7 @@
 package com.meli.demoromannumbersapp.controllers;
 
 
+import com.meli.demoromannumbersapp.models.RomanNumber;
 import com.meli.demoromannumbersapp.utils.NumberConverter;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +13,15 @@ public class NumberCoverterController {
     // /numbers/toDecimal
 
     @GetMapping("/toDecimal")
-    public Integer romanToDecimal1(@RequestParam(value = "decimal", defaultValue = "100") String decimal) {
-        return NumberConverter.romanToDecimal(decimal);
+    public RomanNumber romanToDecimal1(@RequestParam(value = "roman", defaultValue = "X") String roman) {
+
+        return new RomanNumber(NumberConverter.romanToDecimal(roman));
     }
 
     @GetMapping("/toDecimal/{decimal}")
-    public Integer romanToDecimal2(@PathVariable(value = "decimal") String decimal) {
-        return NumberConverter.romanToDecimal(decimal);
+    public RomanNumber romanToDecimal2(@PathVariable(value = "decimal") String roman) {
+
+        return new RomanNumber(NumberConverter.romanToDecimal(roman));
     }
 
 
