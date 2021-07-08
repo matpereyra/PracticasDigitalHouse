@@ -12,9 +12,9 @@ import java.util.List;
 @ControllerAdvice(annotations = RestController.class)
 public class ApiExcepcionControllerAdvice{
 
-    @ExceptionHandler
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler // tambien se ouede especificar aca la excepcion, en lugar de
+    @ResponseBody //Lo que se devuelve se parsea a JSON y es enviado por body
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST) //Status que va en el header
     public ErrorMessage handlerException(MethodArgumentNotValidException exception){
         BindingResult result = exception.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
