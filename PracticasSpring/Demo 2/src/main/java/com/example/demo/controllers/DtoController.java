@@ -16,9 +16,11 @@ import javax.validation.Valid;
 @RequestMapping("/student")
 public class DtoController{
 
+
     @PostMapping("/save")
     public ResponseEntity<StudentResponseDto> saveStudent(@Valid @RequestBody StudentRequestDto student){
         StudentResponseDto studentResponseDto = new StudentResponseDto(
+                // estos dos metodos deberian ser parte de un service. Agrego inyeccion de dpendencia.
                 StudentHandler.validateStudent(),
                 StudentHandler.saveStudent()
         );
