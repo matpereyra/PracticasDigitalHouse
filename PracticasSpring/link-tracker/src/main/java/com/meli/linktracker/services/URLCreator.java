@@ -6,13 +6,13 @@ import com.meli.linktracker.utils.IURLValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class URLCreator implements IURLCreator {
 
     ILinkRepository linkRepository;
     IURLValidator urlValidator;
+
 
     public URLCreator(ILinkRepository linkRepository, IURLValidator urlValidator) {
         this.linkRepository = linkRepository;
@@ -23,7 +23,7 @@ public class URLCreator implements IURLCreator {
     public LinkResponseDTO createAndStore(String link) {
 
         urlValidator.validate(link);
-        String linkID = encoder(link);
+        String linkID = this.encoder(link);
         return linkRepository.createAndStore(link, linkID);
     }
 
@@ -31,4 +31,5 @@ public class URLCreator implements IURLCreator {
         UUID uuid = UUID.randomUUID();
         return uuid.toString().substring(0,5);
     }
+
 }
