@@ -19,8 +19,21 @@ public class LinkRepository implements ILinkRepository{
          */
         //List<LinkResponseDTO> linkDTOs = loadDB();
         LinkResponseDTO linkDTO = new LinkResponseDTO(link, linkID);
-        storeLink(linkDTO);
+        storeLink_2(linkDTO);
         return linkDTO;
+    }
+
+    private void storeLink_2(LinkResponseDTO linkDTO) {
+        List<LinkResponseDTO> links = loadDB();
+        links.add(linkDTO);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            File file = new File("src/main/resources/static/URLs.json");
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file))); // append mode file writer
+            objectMapper.writeValue(out, links);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -31,10 +44,10 @@ public class LinkRepository implements ILinkRepository{
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            File file = new File("classpath:static/URLs.json");
+            File file = new File("src/main/resources/static/URLs.json"); //"classpath:static/URLs.json"
             String path = file.getAbsolutePath(); // todo: BORRAR ESTA LINEA
-            //PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true))); // append mode file writer
-            //objectMapper.writeValue(out, linkDTO);
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true))); // append mode file writer
+            objectMapper.writeValue(out, linkDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,7 +69,7 @@ public class LinkRepository implements ILinkRepository{
         File file = null;
         try{
             /* Con el "classpath:" busca en la carpeta resources */
-            file = ResourceUtils.getFile("classpath:static/URLs.json");
+            file = ResourceUtils.getFile("src/main/resources/static/URLs.json");
 
         }catch (FileNotFoundException e){
             e.printStackTrace();

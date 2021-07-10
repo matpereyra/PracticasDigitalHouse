@@ -6,6 +6,7 @@ import com.meli.linktracker.utils.IURLValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class URLCreator implements IURLCreator {
