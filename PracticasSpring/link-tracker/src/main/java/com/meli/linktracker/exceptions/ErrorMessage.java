@@ -16,7 +16,7 @@ public class ErrorMessage {
 
     private HttpStatus status;
     private String message;
-    private List<FieldError> fieldErrors;
+    /* private List<FieldError> fieldErrors; */
 
 
 }
