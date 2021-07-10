@@ -22,13 +22,13 @@ public class APIController {
     }
 
     @PostMapping("/new/{link}")
-    public ResponseEntity<LinkResponseDTO> createLinkID(@PathVariable String link) throws Exception {
+    public ResponseEntity<LinkResponseDTO> createLinkID(@PathVariable String link) {
         // Este comentario es para probar commitear desde el intelliJ
-        return new ResponseEntity<>(urlCreator.createAndStore(link), HttpStatus.OK);
+        return new ResponseEntity<>(urlCreator.createAndStore("https://www.google.com/"), HttpStatus.OK);
     }
 
     @GetMapping("/google")
     public ResponseEntity<String> HttpRequestGoogle() {
-        return new ResponseEntity<>(httpRequestor.request("https://www.google.com/"), HttpStatus.OK);
+        return new ResponseEntity<>("Todo bien :)", httpRequestor.requestStatus("https://www.google.com/"));
     }
 }

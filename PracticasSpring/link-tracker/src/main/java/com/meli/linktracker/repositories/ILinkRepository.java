@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public interface ILinkRepository {
     
-    LinkResponseDTO createAndStore(String link, String linkID) throws IOException;
+    LinkResponseDTO createAndStore(String link, String linkID);
 
 }

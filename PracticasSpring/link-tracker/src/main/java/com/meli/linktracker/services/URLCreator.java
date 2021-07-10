@@ -5,6 +5,8 @@ import com.meli.linktracker.repositories.ILinkRepository;
 import com.meli.linktracker.utils.IURLValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class URLCreator implements IURLCreator {
 
@@ -17,18 +19,15 @@ public class URLCreator implements IURLCreator {
     }
 
     @Override
-    public LinkResponseDTO createAndStore(String link) throws Exception {
-        /*
-        TODO: aca generar el ID y pasarselo al linkRepository.
-         */
+    public LinkResponseDTO createAndStore(String link) {
 
         urlValidator.validate(link);
         String linkID = encoder(link);
         return linkRepository.createAndStore(link, linkID);
     }
 
-
     private String encoder(String link) {
-        return "abc";
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString().substring(0,5);
     }
 }

@@ -1,5 +1,5 @@
 package com.meli.linktracker.utils;
 
 public interface IURLValidator {
-    void validate(String link) throws Exception;
+    void validate(String link);
 }

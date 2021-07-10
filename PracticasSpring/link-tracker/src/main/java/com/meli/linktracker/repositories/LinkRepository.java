@@ -13,7 +13,7 @@ import java.util.List;
 public class LinkRepository implements ILinkRepository{
 
     @Override
-    public LinkResponseDTO createAndStore(String link, String linkID) throws IOException{
+    public LinkResponseDTO createAndStore(String link, String linkID){
         /*
         todo: Guardo si no se encuentra ya ese id (dificil que haya colisiones, no lo chequeo).
          */
@@ -27,7 +27,7 @@ public class LinkRepository implements ILinkRepository{
     TODO: que ande. por que no puedo dsirectamente hacer un append al archivo? deberia loadear TODO el archivo,
      y ahi recien guardar al final el nuevo link que me mandaorn??????
      */
-    private void storeLink(LinkResponseDTO linkDTO) throws IOException {
+    private void storeLink(LinkResponseDTO linkDTO) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
