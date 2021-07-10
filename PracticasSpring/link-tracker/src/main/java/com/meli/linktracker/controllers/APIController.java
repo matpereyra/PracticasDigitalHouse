@@ -21,6 +21,7 @@ public class APIController {
 
     @PostMapping("/new/{link}")
     public ResponseEntity<LinkResponseDTO> createLinkID(@PathVariable String link) throws Exception {
+        // Este comentario es para probar commitear desde el intelliJ
         return new ResponseEntity<>(urlCreator.createAndStore(link), HttpStatus.OK);
     }
 }
