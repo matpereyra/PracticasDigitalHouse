@@ -8,12 +8,6 @@ public class URLNotValidException extends RuntimeException{
 
     String urlNotValid;
 
-    /*
-    public URLNotValidException(String errorMessage, Throwable originalException) {
-        super(errorMessage, originalException);
-    }
-     */
-
     public URLNotValidException(String errorMessage, String urlNotValid) {
         super(errorMessage);
         this.urlNotValid = urlNotValid;

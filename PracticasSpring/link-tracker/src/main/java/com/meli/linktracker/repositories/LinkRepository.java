@@ -8,9 +8,16 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class LinkRepository implements ILinkRepository{
+
+    private AtomicLong counter;
+
+    public LinkRepository() {
+        this.counter = new AtomicLong(0);
+    }
 
     @Override
     public LinkResponseDTO createAndStore(String link, String linkID){
@@ -18,36 +25,19 @@ public class LinkRepository implements ILinkRepository{
         todo: Guardo si no se encuentra ya ese id (dificil que haya colisiones, no lo chequeo).
          */
         //List<LinkResponseDTO> linkDTOs = loadDB();
-        LinkResponseDTO linkDTO = new LinkResponseDTO(link, linkID);
-        storeLink_2(linkDTO);
+        LinkResponseDTO linkDTO = new LinkResponseDTO(counter.getAndAdd(1), link, linkID);
+        storeLink(linkDTO);
         return linkDTO;
     }
 
-    private void storeLink_2(LinkResponseDTO linkDTO) {
+    private void storeLink(LinkResponseDTO linkDTO) {
         List<LinkResponseDTO> links = loadDB();
         links.add(linkDTO);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             File file = new File("src/main/resources/static/URLs.json");
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file))); // append mode file writer
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             objectMapper.writeValue(out, links);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*
-    TODO: que ande. por que no puedo dsirectamente hacer un append al archivo? deberia loadear TODO el archivo,
-     y ahi recien guardar al final el nuevo link que me mandaorn??????
-     */
-    private void storeLink(LinkResponseDTO linkDTO) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            File file = new File("src/main/resources/static/URLs.json"); //"classpath:static/URLs.json"
-            String path = file.getAbsolutePath(); // todo: BORRAR ESTA LINEA
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true))); // append mode file writer
-            objectMapper.writeValue(out, linkDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }

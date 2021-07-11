@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LinkResponseDTO {
 
+    public Long id;
     public String url;
     public String linkID;
     //public String

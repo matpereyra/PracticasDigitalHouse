@@ -4,5 +4,5 @@ import com.meli.linktracker.DTOs.response.LinkResponseDTO;
 
 public interface IURLCreator {
 
-    LinkResponseDTO createAndStore(String link) throws Exception;
+    LinkResponseDTO createAndStore(String link);
 }
