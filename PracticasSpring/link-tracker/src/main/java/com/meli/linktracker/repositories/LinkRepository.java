@@ -2,21 +2,23 @@ package com.meli.linktracker.repositories;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meli.linktracker.DTOs.StoredLinkDTO;
 import com.meli.linktracker.DTOs.response.LinkResponseDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
 import java.io.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class LinkRepository implements ILinkRepository{
 
-    private AtomicLong counter;
+    private AtomicLong id;
 
     public LinkRepository() {
-        this.counter = new AtomicLong(0);
+        this.id = new AtomicLong(0);
     }
 
     @Override
@@ -25,14 +27,27 @@ public class LinkRepository implements ILinkRepository{
         todo: Guardo si no se encuentra ya ese id (dificil que haya colisiones, no lo chequeo).
          */
         //List<LinkResponseDTO> linkDTOs = loadDB();
-        LinkResponseDTO linkDTO = new LinkResponseDTO(counter.getAndAdd(1), link, linkID);
-        storeLink(linkDTO);
+        LinkResponseDTO linkDTO = new LinkResponseDTO(id.getAndAdd(1), link, linkID);
+        StoredLinkDTO storedLinkDTO = new StoredLinkDTO(linkDTO);
+        storeLink(storedLinkDTO);
         return linkDTO;
     }
 
-    private void storeLink(LinkResponseDTO linkDTO) {
-        List<LinkResponseDTO> links = loadDB();
-        links.add(linkDTO);
+    @Override
+    public String getURL(String linkId) {
+        List<StoredLinkDTO> links = loadDB();
+        Optional<StoredLinkDTO> storedLink = null;
+        try {
+            storedLink = links.stream().filter(l -> l.getLinkID().equals(linkId)).findFirst();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        storedLink.get().addCall();
+        storeDB(links);
+        return storedLink.get().getUrl();
+    }
+
+    private void storeDB(List<StoredLinkDTO> links) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             File file = new File("src/main/resources/static/URLs.json");
@@ -41,6 +56,29 @@ public class LinkRepository implements ILinkRepository{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Long getMetrics(String linkId) {
+        return findFirst(linkId).getCalls();
+    }
+
+    public StoredLinkDTO findFirst(String linkId) {
+        List<StoredLinkDTO> links = loadDB();
+        Optional<StoredLinkDTO> storedLink = null;
+        try {
+            storedLink = links.stream().filter(l -> l.getLinkID().equals(linkId)).findFirst();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return storedLink.get();
+    }
+
+
+    private void storeLink(StoredLinkDTO storedLinkDTO) {
+        List<StoredLinkDTO> links = loadDB();
+        links.add(storedLinkDTO);
+        storeDB(links);
     }
 
     private File openFile(String path) {
@@ -55,7 +93,7 @@ public class LinkRepository implements ILinkRepository{
         return file;
     }
 
-    private List<LinkResponseDTO> loadDB() {
+    private List<StoredLinkDTO> loadDB() {
         File file = null;
         try{
             /* Con el "classpath:" busca en la carpeta resources */
@@ -67,11 +105,11 @@ public class LinkRepository implements ILinkRepository{
         return mapObject(file);
     }
 
-    private List<LinkResponseDTO> mapObject(File file) {
+    private List<StoredLinkDTO> mapObject(File file) {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        TypeReference<List<LinkResponseDTO>> typeReference = new TypeReference<>(){};
-        List<LinkResponseDTO> linkDTOs = null;
+        TypeReference<List<StoredLinkDTO>> typeReference = new TypeReference<>(){};
+        List<StoredLinkDTO> linkDTOs = null;
         try {
             linkDTOs = objectMapper.readValue(file, typeReference);
         }catch (IOException e){

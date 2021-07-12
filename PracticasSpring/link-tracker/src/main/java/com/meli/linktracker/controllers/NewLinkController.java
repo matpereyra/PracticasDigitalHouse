@@ -21,7 +21,7 @@ public class NewLinkController {
 
     public NewLinkController(URLCreator urlCreator) {
         this.urlCreator = urlCreator;
-        this.httpRequestor = httpRequestor;
+        //this.httpRequestor = httpRequestor;
     }
 
 

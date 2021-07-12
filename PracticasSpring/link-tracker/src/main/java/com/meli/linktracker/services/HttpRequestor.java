@@ -1,10 +1,13 @@
 package com.meli.linktracker.services;
 
+import com.meli.linktracker.exceptions.custom.URLHttpStatusNot2xxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -19,14 +22,15 @@ public class HttpRequestor {
     }
 
 
-    /*
-    Probando metodos de RestTemplate.
-     */
     public HttpStatus requestStatus(String link) {
-        // Recibo HTML (para probar)
-        //String json = this.restTemplate.getForObject(link, String.class);
-        // Lo recibo como un ResponseEntity. El HTML es enviado por body ¿?
-        ResponseEntity<String> response = this.restTemplate.getForEntity(link, String.class);
+        ResponseEntity<String> response = null;
+        try {
+            response = this.restTemplate.getForEntity(link, String.class);
+        } catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
+            if (HttpStatus.NOT_FOUND.equals(httpClientOrServerExc.getStatusCode()))
+                return HttpStatus.NOT_FOUND;
+            /* todo: NUNCA DEVUELVE EL VALOR NOT_FOUND PORQUE SALTA DIRECTAMENTE A LA EXCEPCION  */
+        }
         return response.getStatusCode();
     }
 }

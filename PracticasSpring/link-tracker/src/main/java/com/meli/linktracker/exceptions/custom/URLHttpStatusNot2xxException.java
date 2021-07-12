@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class URLHttpStatusNot2xxException extends RuntimeException{
 
-    /*String urlNotValid;
+    String urlNotValid;
     HttpStatus httpStatus;
 
     public URLHttpStatusNot2xxException(String errorMessage, String urlNotValid, HttpStatus httpStatus) {
@@ -14,5 +14,5 @@ public class URLHttpStatusNot2xxException extends RuntimeException{
         this.urlNotValid = urlNotValid;
         this.httpStatus = httpStatus;
     }
-    */
+
 }

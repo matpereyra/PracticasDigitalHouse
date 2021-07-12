@@ -11,19 +11,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Service
 public class URLValidator implements IURLValidator {
 
     private final String[] SCHEMES = {"http", "https"};
-    /*
+
     HttpRequestor httpRequestor;
 
-    @Autowired
     public URLValidator(HttpRequestor httpRequestor) {
         this.httpRequestor = httpRequestor;
     }
-    */
+
     /*
         todo: NO HACE FALTA LLAMAR A ESTE SERVICIO, PUEDO MANJEAR LA VALIDACION CON UN HANDLER
          */
@@ -33,11 +33,16 @@ public class URLValidator implements IURLValidator {
         if (!urlValidator.isValid(link)) {
             throw new URLNotValidException("URL no válida", link);
         }
-        /*
-        HttpStatus status = httpRequestor.requestStatus(link);
-        if (!status.is2xxSuccessful()) {
+
+        HttpStatus status = null;
+        try {
+            status = httpRequestor.requestStatus(link);
+        } catch (Exception e) {
             throw new URLHttpStatusNot2xxException("El request a esa URL no devuelve un estado válido", link, status);
         }
-        */
+        if (Objects.isNull(status) || !status.is2xxSuccessful()) {
+            throw new URLHttpStatusNot2xxException("El request a esa URL no devuelve un estado válido", link, status);
+        }
+
     }
 }
