@@ -25,10 +25,10 @@ public class NewLinkController {
     }
 
 
-    @PostMapping("/") //Atributos de la clase LinkRequestDTO
+    @PostMapping("/")
     public ResponseEntity<LinkResponseDTO> createLinkID(@Valid @RequestBody LinkRequestDTO linkRequestDTO) {
-        //return new ResponseEntity<>(linkRequestDTO, HttpStatus.OK);
-        return new ResponseEntity<>(urlCreator.createAndStore(linkRequestDTO.toString()), HttpStatus.OK);
+        return new ResponseEntity<>(urlCreator.createAndStore(linkRequestDTO.toString(), linkRequestDTO.hashPassword()),
+                                    HttpStatus.OK);
     }
 
     /*
@@ -38,4 +38,7 @@ public class NewLinkController {
     public ResponseEntity<String> HttpRequestGoogle() {
         return new ResponseEntity<>("Todo bien :)", httpRequestor.requestStatus("https://www.google.com/"));
     }
+
+
+
 }

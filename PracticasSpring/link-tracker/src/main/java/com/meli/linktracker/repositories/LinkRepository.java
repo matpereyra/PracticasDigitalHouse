@@ -22,13 +22,12 @@ public class LinkRepository implements ILinkRepository{
     }
 
     @Override
-    public LinkResponseDTO createAndStore(String link, String linkID){
+    public LinkResponseDTO createAndStore(String link, String linkID, String hash){
         /*
         todo: Guardo si no se encuentra ya ese id (dificil que haya colisiones, no lo chequeo).
          */
-        //List<LinkResponseDTO> linkDTOs = loadDB();
         LinkResponseDTO linkDTO = new LinkResponseDTO(id.getAndAdd(1), link, linkID);
-        StoredLinkDTO storedLinkDTO = new StoredLinkDTO(linkDTO);
+        StoredLinkDTO storedLinkDTO = new StoredLinkDTO(linkDTO, hash);
         storeLink(storedLinkDTO);
         return linkDTO;
     }

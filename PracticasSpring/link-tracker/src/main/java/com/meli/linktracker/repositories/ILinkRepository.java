@@ -4,7 +4,7 @@ import com.meli.linktracker.DTOs.response.LinkResponseDTO;
 
 public interface ILinkRepository {
     
-    LinkResponseDTO createAndStore(String link, String linkID);
+    LinkResponseDTO createAndStore(String link, String linkID, String hash);
 
     String getURL(String linkId);
 

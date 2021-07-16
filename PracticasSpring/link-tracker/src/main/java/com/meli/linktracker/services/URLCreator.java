@@ -20,11 +20,10 @@ public class URLCreator implements IURLCreator {
     }
 
     @Override
-    public LinkResponseDTO createAndStore(String link) {
-
+    public LinkResponseDTO createAndStore(String link, String hash) {
         urlValidator.validate(link);
         String linkID = this.encoder(link);
-        return linkRepository.createAndStore(link, linkID);
+        return linkRepository.createAndStore(link, linkID, hash);
     }
 
     private String encoder(String link) {
